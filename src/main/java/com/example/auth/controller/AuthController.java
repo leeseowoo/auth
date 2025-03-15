@@ -1,8 +1,7 @@
 package com.example.auth.controller;
 
-import com.example.auth.service.AuthService;
-import com.example.auth.service.SignupCommand;
-import com.example.auth.service.SignupInfo;
+import com.example.auth.service.*;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,5 +22,12 @@ public class AuthController {
         SignupInfo info = authService.signUp(command);
         SignupDto.SignupResponse response = new SignupDto.SignupResponse(info);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/signin")
+    public ResponseEntity<Void> signin(@RequestBody SigninDto.SigninRequest request, HttpServletResponse httpServletResponse) {
+        SigninCommand command = request.toCommand();
+        authService.signIn(command, httpServletResponse);
+        return ResponseEntity.noContent().build();
     }
 }
